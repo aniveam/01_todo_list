@@ -2,8 +2,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
-
 export interface AuthRequest extends Request {
     userId?: string;
 }
@@ -13,6 +11,7 @@ export const authenticate = (
     res: Response,
     next: NextFunction
 ) => {
+    const JWT_SECRET = process.env.JWT_SECRET as string;
     const token = req.header("Authorization")?.split(" ")[1];
     if (!token) {
         res.status(401).json({ error: "Access denied" });
