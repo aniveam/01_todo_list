@@ -8,7 +8,10 @@ function App() {
 
     return (
         <Routes>
-            <Route path="/" element={!token ? <SignIn /> : <Todos />} />
+            <Route
+                path="/"
+                element={!token ? <SignIn /> : <Navigate to="/todos" />}
+            />
             <Route
                 path="/todos"
                 element={token ? <Todos /> : <Navigate to="/" />}

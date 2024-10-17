@@ -1,15 +1,26 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/index";
+import { useAuth } from "../context/AuthContext";
 import Layout from "../layouts/Layout";
 import Todo from "../types/Todo";
 
 function Todos() {
     const [todos, setTodos] = useState<Todo[] | null>(null);
+    const { token } = useAuth();
+
     useEffect(() => {
-        const fetchTodos = async () =>
-            await api.get("/todos").then((resp) => {
+        const fetchTodos = async () => {
+            try {
+                const resp = await api.get("/todos", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
                 setTodos(resp.data.todos);
-            });
+            } catch (error) {
+                console.error("Error fetching todos:", error);
+            }
+        };
         fetchTodos();
     }, []);
 
