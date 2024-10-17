@@ -10,9 +10,12 @@ router.post("/register", async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     try {
         await User.create({ email, password: hashedPassword });
-        res.status(200).json({ messsage: "User registered" });
+        res.status(200).json({ message: "User registered!" });
     } catch (error) {
-        res.status(400).json({ error: error });
+        res.status(400).json({
+            error: error,
+            message: "User with that email already exists!",
+        });
     }
 });
 
@@ -22,7 +25,7 @@ router.post("/login", async (req: Request, res: Response) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (!user || !(await bcrypt.compare(password, user.password))) {
-            res.status(401).json({ error: "Invalid credentials" });
+            res.status(401).json({ error: "Invalid credentials!" });
             return;
         }
         const token = jwt.sign({ userId: user._id }, JWT_SECRET, {
