@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useState, useContext } from "react";
-import { Todo, TodoContextType } from "../types/Todo";
+import { TodoType, TodoContextType } from "../types/Todo";
 import { api } from "../api";
 import { useAuth } from "./AuthContext";
 
 export const TodoContext = createContext<TodoContextType | null>(null);
 
 export function TodoProvider({ children }: { children: ReactNode }) {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<TodoType[]>([]);
   const { token } = useAuth();
   const headers = {
     Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ export function TodoProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const saveTodo = async (todo: Todo) => {
+  const saveTodo = async (todo: TodoType) => {
     try {
       const response = await api.post("/todos", { todo }, { headers });
       const newTodo = response.data.newTodo;

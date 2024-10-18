@@ -1,8 +1,7 @@
 import { ReactNode, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { TodoProvider } from "../context/TodoContext";
 import CreateModal from "../components/CreateModal";
+import { useAuth } from "../context/AuthContext";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const token = localStorage.getItem("jwtToken");
@@ -16,7 +15,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   };
   return (
     <>
-      <div className="flex flex-row items-center justify-between p-5 bg-indigo-950">
+      <div className="flex flex-row items-center justify-between p-5 bg-indigo-950 sticky top-0">
         <img width={50} src="/img/leaf-logo.png" alt="logo" />
         {token && (
           <div className="flex flex-row space-x-10 items-center">
@@ -42,7 +41,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         )}
       </div>
       {isModalOpen && <CreateModal closeModal={() => setIsModalOpen(false)} />}
-      <main>{children}</main>
+      <main className="flex-grow bg-gradient-to-r from-violet-200 to-violet-400 min-h-screen">
+        {children}
+      </main>
     </>
   );
 }

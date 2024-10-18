@@ -8,11 +8,12 @@ router.post("/", authenticate, async (req: AuthRequest, res: Response) => {
   const { todo } = req.body;
   const userId = req.userId;
   const title = todo.title;
+  const description = todo.description
   try {
-    const newTodo = await Todo.create({ title, userId });
+    const newTodo = await Todo.create({ title, userId, description });
     res.status(200).json({
       message: "Successfully created todo!",
-      newTodo,
+      newTodo
     });
   } catch (error) {
     res.status(500).json({ error: "Error creating todo" });
