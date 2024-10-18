@@ -1,36 +1,40 @@
-import { useEffect, useState } from "react";
-import { api } from "../api/index";
-import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { useTodo } from "../context/TodoContext";
 import Layout from "../layouts/Layout";
-import Todo from "../types/Todo";
 
 function Todos() {
-    const [todos, setTodos] = useState<Todo[] | null>(null);
-    const { token } = useAuth();
+  const { todos, fetchTodos } = useTodo();
 
-    useEffect(() => {
-        const fetchTodos = async () => {
-            try {
-                const resp = await api.get("/todos", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setTodos(resp.data.todos);
-            } catch (error) {
-                console.error("Error fetching todos:", error);
-            }
-        };
-        fetchTodos();
-    }, []);
+  useEffect(() => {
+    fetchTodos();
+  }, []);
 
-    return (
-        <Layout>
-            <div className="flex flex-row justify-center">
-                <h1>TODOS</h1>
+  return (
+    <Layout>
+      <div className="flex flex-col items-center gap-4 mt-10">
+        {todos?.map((todo) => (
+          <div
+            key={todo._id}
+            className="border-4 border-green-200 w-1/3 rounded-md p-2"
+          >
+            <p className="text-xl text-center font-bold">{todo.title}</p>
+            <p>
+              <strong>Status:</strong> {todo.completed ? "COMPLETED" : "TODO"}
+            </p>
+            <p>
+              <strong>Created on:</strong>{" "}
+              {todo.createdAt.toString().slice(0, 10)}
+            </p>
+            <div className="flex justify-center mt-2">
+              <button className="bg-green-600 text-white text-sm rounded-full py-1 px-4">
+                Complete
+              </button>
             </div>
-        </Layout>
-    );
+          </div>
+        ))}
+      </div>
+    </Layout>
+  );
 }
 
 export default Todos;

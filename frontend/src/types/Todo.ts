@@ -1,6 +1,13 @@
-export default interface Todo {
-    title: string,
-    completed: boolean,
-    created_at: Date,
-    userId: string
+export interface Todo {
+  _id?: any;
+  title: string;
+  completed: boolean;
+  createdAt: Date;
+}
+
+export interface TodoContextType {
+  todos: Todo[];
+  saveTodo: (todo: Todo) => void;
+  updateTodo: (id: number) => void;
+  fetchTodos: () => void;
 }

@@ -15,8 +15,8 @@ app.use("/api/todos", todoRoutes);
 app.use("/api/auth", authRoutes); // api/auth/login, api/auth/register
 
 mongoose
-    .connect(process.env.MONGO_URI as string)
-    .then(() => console.log("Mongo DB connected"))
-    .catch((err) => console.log(err));
+  .connect(process.env.MONGO_URI as string)
+  .then(() => console.log("Mongo DB connected"))
+  .catch((err) => console.log(err));
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
